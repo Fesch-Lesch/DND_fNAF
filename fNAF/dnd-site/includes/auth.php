@@ -7,7 +7,7 @@ function isLoggedIn() {
 
 function requireLogin() {
     if (!isLoggedIn()) {
-        header('Location: /dnd-site/login.php');
+        header('Location: /login.php');
         exit;
     }
 }
@@ -18,7 +18,7 @@ function requireRole($roles) {
         $roles = [$roles];
     }
     if (!in_array($_SESSION['role'], $roles)) {
-        header('Location: /dnd-site/dashboard.php?error=access_denied');
+        header('Location: /dashboard.php?error=access_denied');
         exit;
     }
 }

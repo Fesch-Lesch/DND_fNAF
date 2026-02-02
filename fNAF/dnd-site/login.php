@@ -56,7 +56,7 @@ $pageTitle = 'Вход в систему';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $pageTitle ?></title>
-    <link rel="stylesheet" href="/dnd-site/css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
     <style>
         .login-container {
             max-width: 400px;
