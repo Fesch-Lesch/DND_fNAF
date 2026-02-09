@@ -1,0 +1,432 @@
+/* Подключение готических и книжных шрифтов */
+@import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    /* Основной шрифт текста - как в книге */
+    font-family: 'Crimson Text', serif;
+    font-size: 18px;
+    line-height: 1.6;
+    
+    /* ФОН САЙТА - СЮДА ВСТАВИТЬ ССЫЛКУ НА ПЕРГАМЕНТ */
+    /* Пример: url('/images/parchment_bg.jpg') */
+    background-image: url('../images/background.jpg'); 
+    
+    /* Резервный цвет (цвет старой бумаги), если картинка не загрузилась */
+    background-color: #dccfb8; 
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    /* Цвет текста - цвет чернил (не чисто черный) */
+    color: #2b1d0e;
+    min-height: 100vh;
+}
+
+/* Эффект виньетки (затемнение по краям, как у старой страницы) */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 0 0 150px rgba(20, 10, 5, 0.6);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+    position: relative;
+}
+
+/* ===== НАВИГАЦИЯ - КОЖАНЫЙ ПЕРЕПЛЕТ ===== */
+.navbar {
+    background-color: #1a120b; /* Цвет темной кожи */
+    border-bottom: 4px double #5c4033;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-brand a {
+    font-family: 'UnifrakturMaguntia', cursive; /* Готический шрифт */
+    font-size: 32px;
+    color: #e8e8e8;
+    text-decoration: none;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px #000;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+
+.nav-menu li a {
+    font-family: 'UnifrakturMaguntia', cursive;
+    font-size: 20px;
+    color: #bfa89e; /* Цвет выцветшей страницы */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nav-menu li a:hover {
+    color: #a83f39; /* Цвет крови при наведении */
+    text-shadow: 0 0 5px rgba(168, 63, 57, 0.4);
+}
+
+.nav-user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #8c7b75;
+}
+
+/* ===== ВЫПАДАЮЩЕЕ МЕНЮ ===== */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #1a120b;
+    border: 1px solid #5c4033;
+    list-style: none;
+    padding: 10px 0;
+    min-width: 180px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.8);
+    z-index: 1001;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu li a {
+    display: block;
+    padding: 10px 20px;
+    font-size: 18px;
+}
+
+.dropdown-menu li a:hover {
+    background-color: #2c1e16;
+    color: #a83f39;
+}
+
+/* ===== ТИПОГРАФИКА ===== */
+h1, h2, h3 {
+    font-family: 'UnifrakturMaguntia', cursive;
+    color: #1a120b;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #5c4033; /* Линия как подчеркивание пером */
+    display: inline-block;
+    padding-right: 20px;
+}
+
+h1 {
+    font-size: 48px;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+    width: 100%;
+    text-align: center;
+    border-bottom: 3px double #1a120b;
+}
+
+h2 {
+    font-size: 36px;
+    margin-top: 20px;
+}
+
+/* ===== КАРТОЧКИ - СТРАНИЦЫ КНИГИ ===== */
+.card {
+    background: rgba(255, 255, 255, 0.3); /* Полупрозрачность, чтобы было видно текстуру фона */
+    border: 1px solid #5c4033;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 
+        inset 0 0 30px rgba(139, 69, 19, 0.1), /* Эффект старой бумаги внутри */
+        5px 5px 15px rgba(0,0,0,0.1);
+    position: relative;
+}
+
+/* Декоративные уголки для карточек */
+.card::before, .card::after {
+    content: "✦";
+    position: absolute;
+    color: #5c4033;
+    font-size: 20px;
+}
+.card::before { top: 10px; left: 10px; }
+.card::after { bottom: 10px; right: 10px; }
+
+.card p {
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+.card ul {
+    list-style-type: none;
+    padding-left: 10px;
+}
+
+.card ul li::before {
+    content: "— "; /* Длинное тире как в рукописях */
+    color: #8a0303;
+    font-weight: bold;
+}
+
+/* ===== ТАБЛИЦЫ - РЕЕСТР ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: 2px solid #2b1d0e;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+table th {
+    background-color: rgba(43, 29, 14, 0.1);
+    font-family: 'UnifrakturMaguntia', cursive;
+    font-size: 20px;
+    text-align: left;
+    padding: 15px;
+    border-bottom: 2px solid #2b1d0e;
+    color: #8a0303; /* Темно-красные заголовки */
+}
+
+table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #8c7b75;
+    font-size: 17px;
+}
+
+table tr:hover {
+    background-color: rgba(138, 3, 3, 0.05); /* Легкий красный оттенок */
+}
+
+/* ===== КНОПКИ - СУРГУЧНЫЕ ПЕЧАТИ И РОСЧЕРКИ ===== */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    border: 2px solid #2b1d0e;
+    font-family: 'UnifrakturMaguntia', cursive;
+    font-size: 18px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: transparent;
+    color: #2b1d0e;
+}
+
+.btn:hover {
+    transform: scale(1.02);
+}
+
+.btn-primary {
+    background-color: #2b1d0e;
+    color: #dccfb8;
+    border-color: #2b1d0e;
+}
+
+.btn-primary:hover {
+    background-color: #3e2b19;
+}
+
+.btn-success {
+    border-color: #2f4f2f; /* Темно-зеленый лес */
+    color: #1a2e1a;
+    background: rgba(47, 79, 47, 0.1);
+}
+
+.btn-success:hover {
+    background-color: #2f4f2f;
+    color: #dccfb8;
+}
+
+.btn-danger {
+    border-color: #8a0303; /* Кроваво-красный */
+    color: #660000;
+    background: rgba(138, 3, 3, 0.1);
+}
+
+.btn-logout {
+    font-size: 16px;
+    padding: 5px 15px;
+    border: 1px solid #a83f39;
+    color: #a83f39;
+}
+
+.btn-logout:hover {
+    background: #a83f39;
+    color: #1a120b;
+}
+
+/* ===== ФОРМЫ - ЗАПИСИ ПЕРОМ ===== */
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    font-family: 'UnifrakturMaguntia', cursive;
+    font-size: 22px;
+    margin-bottom: 5px;
+    color: #2b1d0e;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #2b1d0e; /* Только нижнее подчеркивание */
+    font-family: 'Crimson Text', serif;
+    font-size: 18px;
+    color: #000;
+    font-style: italic; /* Курсив, как рукопись */
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-bottom-color: #8a0303;
+    background: rgba(0,0,0,0.02);
+}
+
+/* ===== СТАТИСТИКА - ГРАВЮРЫ ===== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+}
+
+.stat-item {
+    text-align: center;
+    border: 3px double #5c4033;
+    padding: 20px;
+    background: rgba(255,255,255, 0.2);
+}
+
+.stat-value {
+    font-family: 'UnifrakturMaguntia', cursive;
+    font-size: 48px;
+    color: #8a0303; /* Цвет крови для цифр */
+    display: block;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 16px;
+    font-variant: small-caps;
+    color: #2b1d0e;
+    margin-top: 10px;
+    border-top: 1px solid #5c4033;
+    padding-top: 5px;
+}
+
+/* ===== ОПОВЕЩЕНИЯ ===== */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid;
+    font-family: 'UnifrakturMaguntia', cursive;
+    font-size: 20px;
+}
+
+.alert-error {
+    color: #660000;
+    border-color: #660000;
+    background: rgba(138, 3, 3, 0.1);
+    border-left: 5px solid #660000;
+}
+
+.alert-success {
+    color: #1a2e1a;
+    border-color: #2f4f2f;
+    background: rgba(47, 79, 47, 0.1);
+    border-left: 5px solid #2f4f2f;
+}
+
+/* ===== СТРАНИЦА ВХОДА ===== */
+.login-container {
+    max-width: 450px;
+    margin: 60px auto;
+    padding: 40px;
+    background: url('../images/background.jpg'); /* Тот же фон для консистентности */
+    background-color: #dccfb8;
+    border: 4px double #1a120b;
+    box-shadow: 10px 10px 30px rgba(0,0,0,0.5);
+    text-align: center;
+}
+
+.login-container h1 {
+    border-bottom: none;
+    font-size: 56px;
+    margin-bottom: 30px;
+}
+
+/* Футер */
+.footer {
+    text-align: center;
+    margin-top: 50px;
+    padding: 30px;
+    font-size: 14px;
+    color: #5c4033;
+    border-top: 1px solid #5c4033;
+    background: #1a120b;
+    color: #8c7b75;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1a120b;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #5c4033;
+    border: 1px solid #1a120b;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #8a0303;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    h1 {
+        font-size: 36px;
+    }
+}
