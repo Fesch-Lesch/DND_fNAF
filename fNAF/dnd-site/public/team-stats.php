@@ -1,7 +1,7 @@
 <?php
 $pageTitle = 'Статистика команды';
-require_once '../config/database.php';
-require_once '../includes/header.php';
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../includes/header.php';
 requireLogin();
 
 $pdo = getDBConnection();
@@ -10,7 +10,6 @@ $teams = $pdo->query("SELECT team_id, team_color FROM TEAMS ORDER BY team_color"
 
 $selectedTeam = null;
 $teamMembers = [];
-$character = null;
 
 if (isset($_GET['team_id'])) {
     $teamId = (int)$_GET['team_id'];
@@ -133,6 +132,9 @@ if (isset($_GET['team_id'])) {
         <?php if ($selectedTeam['ability1']): ?><li><?= htmlspecialchars($selectedTeam['ability1']) ?></li><?php endif; ?>
         <?php if ($selectedTeam['ability2']): ?><li><?= htmlspecialchars($selectedTeam['ability2']) ?></li><?php endif; ?>
         <?php if ($selectedTeam['ability3']): ?><li><?= htmlspecialchars($selectedTeam['ability3']) ?></li><?php endif; ?>
+        <?php if (!$selectedTeam['ability1'] && !$selectedTeam['ability2'] && !$selectedTeam['ability3']): ?>
+            <li><em>Нет способностей</em></li>
+        <?php endif; ?>
     </ul>
     
     <h3>Предметы</h3>
@@ -140,6 +142,9 @@ if (isset($_GET['team_id'])) {
         <?php if ($selectedTeam['item1']): ?><li><?= htmlspecialchars($selectedTeam['item1']) ?></li><?php endif; ?>
         <?php if ($selectedTeam['item2']): ?><li><?= htmlspecialchars($selectedTeam['item2']) ?></li><?php endif; ?>
         <?php if ($selectedTeam['item3']): ?><li><?= htmlspecialchars($selectedTeam['item3']) ?></li><?php endif; ?>
+        <?php if (!$selectedTeam['item1'] && !$selectedTeam['item2'] && !$selectedTeam['item3']): ?>
+            <li><em>Нет предметов</em></li>
+        <?php endif; ?>
     </ul>
 </div>
 <?php endif; ?>
@@ -156,21 +161,27 @@ if (isset($_GET['team_id'])) {
             </tr>
         </thead>
         <tbody>
-            <?php $i = 1; foreach ($teamMembers as $member): ?>
-            <tr>
-                <td><?= $i++ ?></td>
-                <td>
-                    <?= htmlspecialchars($member['last_name']) ?>
-                    <?= htmlspecialchars($member['first_name']) ?>
-                    <?= htmlspecialchars($member['middle_name'] ?? '') ?>
-                </td>
-                <td><?= $member['score'] ?> 🪙</td>
-            </tr>
-            <?php endforeach; ?>
+            <?php if (empty($teamMembers)): ?>
+                <tr>
+                    <td colspan="3" style="text-align: center;">В команде нет участников</td>
+                </tr>
+            <?php else: ?>
+                <?php $i = 1; foreach ($teamMembers as $member): ?>
+                <tr>
+                    <td><?= $i++ ?></td>
+                    <td>
+                        <?= htmlspecialchars($member['last_name']) ?>
+                        <?= htmlspecialchars($member['first_name']) ?>
+                        <?= htmlspecialchars($member['middle_name'] ?? '') ?>
+                    </td>
+                    <td><?= $member['score'] ?> 🪙</td>
+                </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </tbody>
     </table>
 </div>
 
 <?php endif; ?>
 
-<?php require_once '../includes/footer.php'; ?>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>

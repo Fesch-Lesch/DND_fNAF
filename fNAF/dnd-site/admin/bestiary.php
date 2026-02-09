@@ -1,7 +1,7 @@
 <?php
 $pageTitle = 'Редактор бестиария';
-require_once '../config/database.php';
-require_once '../includes/header.php';
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../includes/header.php';
 requireRole('admin');
 
 $pdo = getDBConnection();
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'description' => trim($_POST['description']) ?: null,
         'habitat' => trim($_POST['habitat']) ?: null
     ];
-    
+
     if (empty($data['name']) || empty($data['type'])) {
         $error = 'Имя и тип существа обязательны';
     } else {
@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute(array_values($data));
             $message = 'Существо успешно добавлено в бестиарий';
         }
-        
+
         header('Location: bestiary.php?success=1');
         exit;
     }
@@ -327,327 +327,50 @@ $sizeLabels = [
 <div class="card">
     <h2>Список существ в бестиарии</h2>
     
-    <div class="form-group" style="margin-bottom: 20px;">
-        <input type="text" id="searchTable" placeholder="Поиск по таблице..." 
-               onkeyup="searchTable()" style="max-width: 300px;">
-    </div>
-    
-    <div style="overflow-x: auto;">
-        <table id="bestiaryTable">
-            <thead>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Тип</th>
+                <th>Размер</th>
+                <th>CR</th>
+                <th>XP</th>
+                <th>HP</th>
+                <th>AC</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (empty($creatures)): ?>
                 <tr>
-                    <th>ID</th>
-                    <th>Название</th>
-                    <th>Тип</th>
-                    <th>Размер</th>
-                    <th>CR</th>
-                    <th>XP</th>
-                    <th>HP</th>
-                    <th>AC</th>
-                    <th>Действия</th>
+                    <td colspan="9" style="text-align: center;">Бестиарий пуст</td>
                 </tr>
-            </thead>
-            <tbody>
-                <?php if (empty($creatures)): ?>
-                    <tr>
-                        <td colspan="9" style="text-align: center;">Бестиарий пуст</td>
-                    </tr>
-                <?php else: ?>
-                    <?php foreach ($creatures as $creature): ?>
-                    <tr>
-                        <td><?= $creature['creature_id'] ?></td>
-                        <td><?= htmlspecialchars($creature['name']) ?></td>
-                        <td><?= htmlspecialchars($creature['type']) ?></td>
-                        <td><?= $sizeLabels[$creature['size']] ?? $creature['size'] ?></td>
-                        <td><?= $creature['challenge_rating'] ?></td>
-                        <td><?= $creature['experience_points'] ?></td>
-                        <td><?= $creature['hp'] ?></td>
-                        <td><?= $creature['armor_class'] ?></td>
-                        <td style="white-space: nowrap;">
-                            <a href="../public/bestiary-view.php?creature_id=<?= $creature['creature_id'] ?>" 
-                               class="btn btn-secondary" style="padding: 5px 10px;" target="_blank">Просмотр</a>
-                            <a href="bestiary.php?edit=<?= $creature['creature_id'] ?>" 
-                               class="btn btn-primary" style="padding: 5px 10px;">Редактировать</a>
-                            <a href="bestiary.php?delete=<?= $creature['creature_id'] ?>" 
-                               class="btn btn-danger" style="padding: 5px 10px;"
-                               onclick="return confirm('Удалить существо «<?= htmlspecialchars($creature['name']) ?>»?')">Удалить</a>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-            </tbody>
-        </table>
-    </div>
+            <?php else: ?>
+                <?php foreach ($creatures as $creature): ?>
+                <tr>
+                    <td><?= $creature['creature_id'] ?></td>
+                    <td><?= htmlspecialchars($creature['name']) ?></td>
+                    <td><?= htmlspecialchars($creature['type']) ?></td>
+                    <td><?= $sizeLabels[$creature['size']] ?? $creature['size'] ?></td>
+                    <td><?= $creature['challenge_rating'] ?></td>
+                    <td><?= $creature['experience_points'] ?></td>
+                    <td><?= $creature['hp'] ?></td>
+                    <td><?= $creature['armor_class'] ?></td>
+                    <td style="white-space: nowrap;">
+                        <a href="../public/bestiary-view.php?creature_id=<?= $creature['creature_id'] ?>" 
+                           class="btn btn-secondary" style="padding: 5px 10px;" target="_blank">Просмотр</a>
+                        <a href="bestiary.php?edit=<?= $creature['creature_id'] ?>" 
+                           class="btn btn-primary" style="padding: 5px 10px;">Редактировать</a>
+                        <a href="bestiary.php?delete=<?= $creature['creature_id'] ?>" 
+                           class="btn btn-danger" style="padding: 5px 10px;"
+                           onclick="return confirm('Удалить существо?')">Удалить</a>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </tbody>
+    </table>
 </div>
 
-<div class="card">
-    <h2>Быстрое добавление стандартных существ</h2>
-    <p>Нажмите на кнопку, чтобы добавить предустановленное существо в бестиарий:</p>
-    
-    <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px;">
-        <button type="button" class="btn btn-secondary" onclick="fillTemplate('goblin')">Гоблин</button>
-        <button type="button" class="btn btn-secondary" onclick="fillTemplate('skeleton')">Скелет</button>
-        <button type="button" class="btn btn-secondary" onclick="fillTemplate('zombie')">Зомби</button>
-        <button type="button" class="btn btn-secondary" onclick="fillTemplate('orc')">Орк</button>
-        <button type="button" class="btn btn-secondary" onclick="fillTemplate('wolf')">Волк</button>
-        <button type="button" class="btn btn-secondary" onclick="fillTemplate('ogre')">Огр</button>
-        <button type="button" class="btn btn-secondary" onclick="fillTemplate('troll')">Тролль</button>
-        <button type="button" class="btn btn-secondary" onclick="fillTemplate('dragon')">Молодой дракон</button>
-    </div>
-</div>
-
-<script>
-function searchTable() {
-    const input = document.getElementById('searchTable');
-    const filter = input.value.toLowerCase();
-    const table = document.getElementById('bestiaryTable');
-    const rows = table.getElementsByTagName('tr');
-    
-    for (let i = 1; i < rows.length; i++) {
-        const cells = rows[i].getElementsByTagName('td');
-        let found = false;
-        
-        for (let j = 0; j < cells.length - 1; j++) {
-            if (cells[j].textContent.toLowerCase().indexOf(filter) > -1) {
-                found = true;
-                break;
-            }
-        }
-        
-        rows[i].style.display = found ? '' : 'none';
-    }
-}
-
-const templates = {
-    goblin: {
-        name: 'Гоблин',
-        type: 'Гуманоид',
-        size: 'small',
-        alignment: 'нейтрально-злой',
-        challenge_rating: 0.25,
-        experience_points: 50,
-        hp: 7,
-        armor_class: 15,
-        speed: '30 ft.',
-        strength: 8,
-        dexterity: 14,
-        constitution: 10,
-        intelligence: 10,
-        wisdom: 8,
-        charisma: 8,
-        senses: 'Тёмное зрение 60 ft.',
-        languages: 'Общий, Гоблинский',
-        special_abilities: 'Проворный побег: Гоблин может совершать Отход или Засаду бонусным действием в каждый свой ход.',
-        actions: 'Ятаган: +4 к попаданию, досягаемость 5 ft., одна цель. Попадание: 5 (1d6+2) рубящего урона.\nКороткий лук: +4 к попаданию, дальность 80/320 ft., одна цель. Попадание: 5 (1d6+2) колющего урона.',
-        description: 'Маленькие злобные гуманоиды, обитающие в тёмных местах. Гоблины трусливы поодиночке, но опасны в больших группах.',
-        habitat: 'Пещеры, подземелья, леса'
-    },
-    skeleton: {
-        name: 'Скелет',
-        type: 'Нежить',
-        size: 'medium',
-        alignment: 'законно-злой',
-        challenge_rating: 0.25,
-        experience_points: 50,
-        hp: 13,
-        armor_class: 13,
-        speed: '30 ft.',
-        strength: 10,
-        dexterity: 14,
-        constitution: 15,
-        intelligence: 6,
-        wisdom: 8,
-        charisma: 5,
-        damage_vulnerabilities: 'дробящий',
-        damage_immunities: 'яд',
-        condition_immunities: 'отравление, истощение',
-        senses: 'Тёмное зрение 60 ft.',
-        languages: 'Понимает языки, которые знал при жизни, но не может говорить',
-        actions: 'Короткий меч: +4 к попаданию, досягаемость 5 ft., одна цель. Попадание: 5 (1d6+2) колющего урона.\nКороткий лук: +4 к попаданию, дальность 80/320 ft., одна цель. Попадание: 5 (1d6+2) колющего урона.',
-        description: 'Оживлённые магией кости умерших. Скелеты подчиняются командам своего создателя.',
-        habitat: 'Кладбища, склепы, подземелья'
-    },
-    zombie: {
-        name: 'Зомби',
-        type: 'Нежить',
-        size: 'medium',
-        alignment: 'нейтрально-злой',
-        challenge_rating: 0.25,
-        experience_points: 50,
-        hp: 22,
-        armor_class: 8,
-        speed: '20 ft.',
-        strength: 13,
-        dexterity: 6,
-        constitution: 16,
-        intelligence: 3,
-        wisdom: 6,
-        charisma: 5,
-        damage_immunities: 'яд',
-        condition_immunities: 'отравление',
-        senses: 'Тёмное зрение 60 ft.',
-        languages: 'Понимает языки, которые знал при жизни, но не может говорить',
-        special_abilities: 'Стойкость нежити: Если урон уменьшает хиты зомби до 0, он должен совершить спасбросок Телосложения со Сл 5 + полученный урон, если только урон не был излучением или критическим попаданием. При успехе хиты зомби вместо этого становятся равны 1.',
-        actions: 'Удар: +3 к попаданию, досягаемость 5 ft., одна цель. Попадание: 4 (1d6+1) дробящего урона.',
-        description: 'Оживлённые тела умерших, подчиняющиеся воле своего создателя.',
-        habitat: 'Кладбища, склепы, места тёмной магии'
-    },
-    orc: {
-        name: 'Орк',
-        type: 'Гуманоид',
-        size: 'medium',
-        alignment: 'хаотично-злой',
-        challenge_rating: 0.5,
-        experience_points: 100,
-        hp: 15,
-        armor_class: 13,
-        speed: '30 ft.',
-        strength: 16,
-        dexterity: 12,
-        constitution: 16,
-        intelligence: 7,
-        wisdom: 11,
-        charisma: 10,
-        senses: 'Тёмное зрение 60 ft.',
-        languages: 'Общий, Орочий',
-        special_abilities: 'Агрессия: Бонусным действием орк может переместиться на расстояние, не превышающее его скорость, к враждебному существу, которое он видит.',
-        actions: 'Секира: +5 к попаданию, досягаемость 5 ft., одна цель. Попадание: 9 (1d12+3) рубящего урона.\nМетательное копьё: +5 к попаданию, дальность 30/120 ft., одна цель. Попадание: 6 (1d6+3) колющего урона.',
-        description: 'Свирепые воины с серо-зелёной кожей. Орки живут войной и набегами.',
-        habitat: 'Горы, леса, пустоши'
-    },
-    wolf: {
-        name: 'Волк',
-        type: 'Зверь',
-        size: 'medium',
-        alignment: 'без мировоззрения',
-        challenge_rating: 0.25,
-        experience_points: 50,
-        hp: 11,
-        armor_class: 13,
-        speed: '40 ft.',
-        strength: 12,
-        dexterity: 15,
-        constitution: 12,
-        intelligence: 3,
-        wisdom: 12,
-        charisma: 6,
-        senses: 'Пассивное восприятие 13',
-        special_abilities: 'Тонкий слух и обоняние: Волк совершает с преимуществом проверки Мудрости (Внимательность), связанные со слухом или обонянием.\nТактика стаи: Волк совершает с преимуществом броски атаки по существу, если в пределах 5 футов от этого существа находится дееспособный союзник волка.',
-        actions: 'Укус: +4 к попаданию, досягаемость 5 ft., одна цель. Попадание: 7 (2d4+2) колющего урона. Если цель — существо, она должна преуспеть в спасброске Силы со Сл 11, иначе будет сбита с ног.',
-        description: 'Хищные звери, охотящиеся стаями. Волки опасны благодаря своей тактике.',
-        habitat: 'Леса, равнины, горы'
-    },
-    ogre: {
-        name: 'Огр',
-        type: 'Великан',
-        size: 'large',
-        alignment: 'хаотично-злой',
-        challenge_rating: 2,
-        experience_points: 450,
-        hp: 59,
-        armor_class: 11,
-        speed: '40 ft.',
-        strength: 19,
-        dexterity: 8,
-        constitution: 16,
-        intelligence: 5,
-        wisdom: 7,
-        charisma: 7,
-        senses: 'Тёмное зрение 60 ft.',
-        languages: 'Общий, Великаний',
-        actions: 'Палица: +6 к попаданию, досягаемость 5 ft., одна цель. Попадание: 13 (2d8+4) дробящего урона.\nМетательное копьё: +6 к попаданию, дальность 30/120 ft., одна цель. Попадание: 11 (2d6+4) колющего урона.',
-        description: 'Огромные тупые гуманоиды с ненасытным аппетитом. Огры едят всё, что могут поймать.',
-        habitat: 'Холмы, пещеры, руины'
-    },
-    troll: {
-        name: 'Тролль',
-        type: 'Великан',
-        size: 'large',
-        alignment: 'хаотично-злой',
-        challenge_rating: 5,
-        experience_points: 1800,
-        hp: 84,
-        armor_class: 15,
-        speed: '30 ft.',
-        strength: 18,
-        dexterity: 13,
-        constitution: 20,
-        intelligence: 7,
-        wisdom: 9,
-        charisma: 7,
-        senses: 'Тёмное зрение 60 ft.',
-        languages: 'Великаний',
-        special_abilities: 'Тонкое обоняние: Тролль совершает с преимуществом проверки Мудрости (Внимательность), связанные с обонянием.\nРегенерация: Тролль восстанавливает 10 хитов в начале своего хода. Если тролль получает урон огнём или кислотой, эта особенность не работает в начале следующего хода тролля. Тролль умирает только если начинает ход с 0 хитами и не регенерирует.',
-        actions: 'Мультиатака: Тролль совершает три атаки: одну укусом и две когтями.\nУкус: +7 к попаданию, досягаемость 5 ft., одна цель. Попадание: 7 (1d6+4) колющего урона.\nКогти: +7 к попаданию, досягаемость 5 ft., одна цель. Попадание: 11 (2d6+4) рубящего урона.',
-        description: 'Уродливые великаны с невероятной способностью к регенерации. Боятся только огня и кислоты.',
-        habitat: 'Болота, подземелья, горы',
-        damage_vulnerabilities: '',
-        damage_resistances: '',
-        damage_immunities: '',
-        condition_immunities: ''
-    },
-    dragon: {
-        name: 'Молодой красный дракон',
-        type: 'Дракон',
-        size: 'large',
-        alignment: 'хаотично-злой',
-        challenge_rating: 10,
-        experience_points: 5900,
-        hp: 178,
-        armor_class: 18,
-        speed: '40 ft., climb 40 ft., fly 80 ft.',
-        strength: 23,
-        dexterity: 10,
-        constitution: 21,
-        intelligence: 14,
-        wisdom: 11,
-        charisma: 19,
-        damage_immunities: 'огонь',
-        senses: 'Слепое зрение 30 ft., тёмное зрение 120 ft.',
-        languages: 'Общий, Драконий',
-        special_abilities: 'Легендарное сопротивление (3/день): Если дракон проваливает спасбросок, он может вместо этого сделать его успешным.',
-        actions: 'Мультиатака: Дракон совершает три атаки: одну укусом и две когтями.\nУкус: +10 к попаданию, досягаемость 10 ft., одна цель. Попадание: 17 (2d10+6) колющего урона плюс 3 (1d6) урона огнём.\nКоготь: +10 к попаданию, досягаемость 5 ft., одна цель. Попадание: 13 (2d6+6) рубящего урона.\nОгненное дыхание (перезарядка 5-6): Дракон выдыхает огонь 30-футовым конусом. Все существа в этой области должны совершить спасбросок Ловкости со Сл 17, получая 56 (16d6) урона огнём при провале, или половину этого урона при успехе.',
-        legendary_actions: 'Дракон может совершить 3 легендарных действия, выбирая из представленных ниже вариантов. Только одно легендарное действие может быть использовано за раз, и только в конце хода другого существа.\nОбнаружение: Дракон совершает проверку Мудрости (Внимательность).\nАтака хвостом: Дракон совершает атаку хвостом.\nАтака крыльями (стоит 2 действия): Дракон бьёт крыльями. Все существа в пределах 10 футов должны преуспеть в спасброске Ловкости со Сл 19, иначе получат 13 (2d6+6) дробящего урона и будут сбиты с ног.',
-        description: 'Красные драконы — самые жадные и высокомерные из истинных драконов. Они обожают сокровища и поклонение.',
-        habitat: 'Горы, вулканы'
-    }
-};
-
-function fillTemplate(type) {
-    const template = templates[type];
-    if (!template) return;
-    
-    document.getElementById('name').value = template.name || '';
-    document.getElementById('type').value = template.type || '';
-    document.getElementById('size').value = template.size || 'medium';
-    document.getElementById('alignment').value = template.alignment || '';
-    document.getElementById('challenge_rating').value = template.challenge_rating || 0;
-    document.getElementById('experience_points').value = template.experience_points || 0;
-    document.getElementById('hp').value = template.hp || 10;
-    document.getElementById('armor_class').value = template.armor_class || 10;
-    document.getElementById('speed').value = template.speed || '30 ft.';
-    document.getElementById('strength').value = template.strength || 10;
-    document.getElementById('dexterity').value = template.dexterity || 10;
-    document.getElementById('constitution').value = template.constitution || 10;
-    document.getElementById('intelligence').value = template.intelligence || 10;
-    document.getElementById('wisdom').value = template.wisdom || 10;
-    document.getElementById('charisma').value = template.charisma || 10;
-    document.getElementById('damage_vulnerabilities').value = template.damage_vulnerabilities || '';
-    document.getElementById('damage_resistances').value = template.damage_resistances || '';
-    document.getElementById('damage_immunities').value = template.damage_immunities || '';
-    document.getElementById('condition_immunities').value = template.condition_immunities || '';
-    document.getElementById('senses').value = template.senses || '';
-    document.getElementById('languages').value = template.languages || '';
-    document.getElementById('special_abilities').value = template.special_abilities || '';
-    document.getElementById('actions').value = template.actions || '';
-    document.getElementById('legendary_actions').value = template.legendary_actions || '';
-    document.getElementById('description').value = template.description || '';
-    document.getElementById('habitat').value = template.habitat || '';
-    
-    window.scrollTo({top: 0, behavior: 'smooth'});
-    
-    document.getElementById('name').focus();
-}
-</script>
-
-<?php require_once '../includes/footer.php'; ?>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>

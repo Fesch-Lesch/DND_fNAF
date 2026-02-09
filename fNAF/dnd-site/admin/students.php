@@ -1,7 +1,7 @@
 <?php
 $pageTitle = 'Управление студентами';
-require_once '../config/database.php';
-require_once '../includes/header.php';
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../includes/header.php';
 requireRole('admin');
 
 $pdo = getDBConnection();
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $middleName = trim($_POST['middle_name']) ?: null;
     $teamId = $_POST['team_id'] ?: null;
     $score = (int)$_POST['score'];
-    
+
     if (empty($firstName) || empty($lastName)) {
         $error = 'Имя и фамилия обязательны';
     } else {
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute([$firstName, $lastName, $middleName, $teamId, $score]);
             $message = 'Студент успешно добавлен';
         }
-        
+
         header('Location: students.php?success=1');
         exit;
     }
@@ -154,23 +154,29 @@ $students = $stmt->fetchAll();
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($students as $student): ?>
-            <tr>
-                <td><?= $student['student_id'] ?></td>
-                <td><?= htmlspecialchars($student['last_name']) ?></td>
-                <td><?= htmlspecialchars($student['first_name']) ?></td>
-                <td><?= htmlspecialchars($student['middle_name'] ?? '-') ?></td>
-                <td><?= htmlspecialchars($student['team_color'] ?? 'Без команды') ?></td>
-                <td><?= $student['score'] ?> 🪙</td>
-                <td>
-                    <a href="students.php?edit=<?= $student['student_id'] ?>" class="btn btn-primary" style="padding: 5px 10px;">Редактировать</a>
-                    <a href="students.php?delete=<?= $student['student_id'] ?>" class="btn btn-danger" style="padding: 5px 10px;" 
-                       onclick="return confirm('Удалить студента?')">Удалить</a>
-                </td>
-            </tr>
-            <?php endforeach; ?>
+            <?php if (empty($students)): ?>
+                <tr>
+                    <td colspan="7" style="text-align: center;">Студенты не найдены</td>
+                </tr>
+            <?php else: ?>
+                <?php foreach ($students as $student): ?>
+                <tr>
+                    <td><?= $student['student_id'] ?></td>
+                    <td><?= htmlspecialchars($student['last_name']) ?></td>
+                    <td><?= htmlspecialchars($student['first_name']) ?></td>
+                    <td><?= htmlspecialchars($student['middle_name'] ?? '-') ?></td>
+                    <td><?= htmlspecialchars($student['team_color'] ?? 'Без команды') ?></td>
+                    <td><?= $student['score'] ?> 🪙</td>
+                    <td>
+                        <a href="students.php?edit=<?= $student['student_id'] ?>" class="btn btn-primary" style="padding: 5px 10px;">Редактировать</a>
+                        <a href="students.php?delete=<?= $student['student_id'] ?>" class="btn btn-danger" style="padding: 5px 10px;" 
+                           onclick="return confirm('Удалить студента?')">Удалить</a>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </tbody>
     </table>
 </div>
 
-<?php require_once '../includes/footer.php'; ?>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>

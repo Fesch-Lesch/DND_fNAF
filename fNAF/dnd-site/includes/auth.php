@@ -1,5 +1,17 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+function getBasePath() {
+    $script = $_SERVER['SCRIPT_NAME'];
+    $dir = dirname($script);
+    
+    if (preg_match('#/(admin|teacher|public)$#', $dir)) {
+        return '..';
+    }
+    return '.';
+}
 
 function isLoggedIn() {
     return isset($_SESSION['user_id']);
@@ -7,7 +19,8 @@ function isLoggedIn() {
 
 function requireLogin() {
     if (!isLoggedIn()) {
-        header('Location: /login.php');
+        $base = getBasePath();
+        header("Location: $base/login.php");
         exit;
     }
 }
@@ -18,7 +31,8 @@ function requireRole($roles) {
         $roles = [$roles];
     }
     if (!in_array($_SESSION['role'], $roles)) {
-        header('Location: /dashboard.php?error=access_denied');
+        $base = getBasePath();
+        header("Location: $base/dashboard.php?error=access_denied");
         exit;
     }
 }
@@ -49,4 +63,3 @@ function setCurrentUserForTriggers($pdo) {
     $pdo->exec("SET @current_user_id = " . ($userId ? (int)$userId : 'NULL'));
     $pdo->exec("SET @current_username = " . ($username ? "'" . addslashes($username) . "'" : 'NULL'));
 }
-?>

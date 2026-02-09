@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&family=Uncial+Antiqua&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -5,37 +7,148 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    background-color: #f4f4f4;
+    font-family: 'MedievalSharp', Georgia, serif;
+    line-height: 1.7;
+    background-color: #1a1510;
+    background-image: 
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect fill="%231a1510" width="200" height="200"/><circle fill="%23231c14" cx="25" cy="25" r="2"/><circle fill="%23231c14" cx="75" cy="50" r="1.5"/><circle fill="%23231c14" cx="125" cy="25" r="1"/><circle fill="%23231c14" cx="175" cy="75" r="2"/><circle fill="%23231c14" cx="50" cy="100" r="1.5"/><circle fill="%23231c14" cx="100" cy="150" r="2"/><circle fill="%23231c14" cx="150" cy="125" r="1"/><circle fill="%23231c14" cx="25" cy="175" r="1.5"/><circle fill="%23231c14" cx="175" cy="175" r="2"/></svg>');
+    color: #c4b8a8;
+    min-height: 100vh;
 }
 
 .container {
     max-width: 1200px;
     margin: 20px auto;
-    padding: 20px;
+    padding: 30px;
+    background: linear-gradient(to bottom, #2a2318 0%, #1e1a14 100%);
+    border: 3px solid #3d3428;
+    border-radius: 3px;
+    box-shadow: 
+        0 0 0 1px #1a1510,
+        0 0 0 4px #2a2318,
+        0 0 0 5px #3d3428,
+        0 15px 40px rgba(0, 0, 0, 0.7),
+        inset 0 0 80px rgba(0, 0, 0, 0.4);
+    position: relative;
 }
 
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.03) 2px,
+            rgba(0, 0, 0, 0.03) 4px
+        );
+    pointer-events: none;
+    border-radius: 3px;
+}
+
+/* Навигация - кованое железо */
 .navbar {
-    background-color: #333;
-    color: #fff;
-    padding: 10px 20px;
+    background: linear-gradient(180deg, 
+        #2a2520 0%, 
+        #1a1815 40%,
+        #151310 60%,
+        #1a1815 100%);
+    color: #b8a890;
+    padding: 18px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.8),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.5);
+    border-bottom: 2px solid #3d3428;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar::before {
+    content: '☠';
+    font-size: 22px;
+    color: #8b6b55;
+    text-shadow: 0 0 10px rgba(139, 107, 85, 0.5);
+}
+
+.navbar::after {
+    content: '☠';
+    font-size: 22px;
+    color: #8b6b55;
+    text-shadow: 0 0 10px rgba(139, 107, 85, 0.5);
+}
+
+.nav-brand a {
+    color: #a67c52;
+    text-decoration: none;
+    font-family: 'Uncial Antiqua', cursive;
+    font-size: 26px;
+    text-shadow: 
+        0 0 20px rgba(166, 124, 82, 0.4),
+        2px 2px 4px rgba(0, 0, 0, 0.8);
+    letter-spacing: 3px;
 }
 
 .navbar a {
-    color: #fff;
+    color: #b8a890;
     text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.navbar a:hover {
+    color: #d4a574;
+    text-shadow: 0 0 15px rgba(212, 165, 116, 0.5);
 }
 
 .nav-menu {
     display: flex;
     list-style: none;
-    gap: 20px;
+    gap: 8px;
+    align-items: center;
 }
 
+.nav-menu > li > a {
+    padding: 10px 16px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, #252015 0%, #1a1810 100%);
+    border: 1px solid #3d3428;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.03),
+        0 2px 4px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.nav-menu > li > a:hover {
+    background: linear-gradient(180deg, #302818 0%, #252015 100%);
+    border-color: #5a4a32;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 0 15px rgba(166, 124, 82, 0.2);
+}
+
+.nav-user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.nav-user span {
+    color: #8b7d6b;
+    font-size: 13px;
+    font-style: italic;
+}
+
+/* Выпадающее меню */
 .dropdown {
     position: relative;
 }
@@ -43,144 +156,734 @@ body {
 .dropdown-menu {
     display: none;
     position: absolute;
-    background-color: #444;
+    top: 100%;
+    left: 0;
+    background: linear-gradient(180deg, #1e1a14 0%, #151210 100%);
     list-style: none;
-    padding: 10px;
-    min-width: 150px;
+    padding: 8px 0;
+    min-width: 200px;
+    border: 1px solid #3d3428;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.8),
+        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    margin-top: 5px;
 }
 
 .dropdown:hover .dropdown-menu {
     display: block;
 }
 
-.dropdown-menu li {
-    padding: 5px 0;
+.dropdown-menu li a {
+    display: block;
+    padding: 10px 18px;
+    color: #b8a890;
+    transition: all 0.3s ease;
+    border-left: 2px solid transparent;
+    font-size: 14px;
 }
 
+.dropdown-menu li a:hover {
+    background: rgba(166, 124, 82, 0.1);
+    border-left-color: #a67c52;
+    color: #d4a574;
+}
+
+/* Кнопки - металлические с заклёпками */
 .btn {
-    padding: 10px 20px;
+    padding: 12px 28px;
     border: none;
+    border-radius: 2px;
     cursor: pointer;
     text-decoration: none;
     display: inline-block;
+    font-size: 13px;
+    font-weight: bold;
+    font-family: 'MedievalSharp', serif;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    position: relative;
+}
+
+.btn::before,
+.btn::after {
+    content: '•';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 10px;
+    opacity: 0.6;
+}
+
+.btn::before {
+    left: 8px;
+}
+
+.btn::after {
+    right: 8px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
 }
 
 .btn-primary {
-    background-color: #007bff;
-    color: #fff;
+    background: linear-gradient(180deg, #4a3f2f 0%, #2a2520 50%, #1a1815 100%);
+    color: #a67c52;
+    border: 1px solid #5a4a32;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 3px 8px rgba(0, 0, 0, 0.5);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(180deg, #5a4f3f 0%, #3a3530 50%, #2a2825 100%);
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        0 5px 15px rgba(0, 0, 0, 0.6),
+        0 0 20px rgba(166, 124, 82, 0.2);
 }
 
 .btn-success {
-    background-color: #28a745;
-    color: #fff;
+    background: linear-gradient(180deg, #3a4a2f 0%, #2a3520 50%, #1a2515 100%);
+    color: #8ba870;
+    border: 1px solid #4a5a32;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 3px 8px rgba(0, 0, 0, 0.5);
+}
+
+.btn-success:hover {
+    background: linear-gradient(180deg, #4a5a3f 0%, #3a4530 50%, #2a3525 100%);
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        0 5px 15px rgba(0, 0, 0, 0.6),
+        0 0 20px rgba(139, 168, 112, 0.2);
 }
 
 .btn-danger {
-    background-color: #dc3545;
-    color: #fff;
+    background: linear-gradient(180deg, #4a2f2f 0%, #3a2020 50%, #2a1515 100%);
+    color: #a87070;
+    border: 1px solid #5a3232;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 3px 8px rgba(0, 0, 0, 0.5);
+}
+
+.btn-danger:hover {
+    background: linear-gradient(180deg, #5a3f3f 0%, #4a3030 50%, #3a2525 100%);
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        0 5px 15px rgba(0, 0, 0, 0.6),
+        0 0 20px rgba(168, 112, 112, 0.2);
+}
+
+.btn-secondary {
+    background: linear-gradient(180deg, #3a3835 0%, #2a2825 50%, #1a1815 100%);
+    color: #a0998f;
+    border: 1px solid #4a4842;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 3px 8px rgba(0, 0, 0, 0.5);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(180deg, #4a4845 0%, #3a3835 50%, #2a2825 100%);
 }
 
 .btn-logout {
-    background-color: #dc3545;
-    padding: 5px 10px;
-    margin-left: 10px;
+    background: linear-gradient(180deg, #3a1515 0%, #2a1010 100%);
+    color: #a87070;
+    padding: 8px 18px;
+    font-size: 11px;
+    border: 1px solid #4a2525;
 }
 
+/* Формы - старый пергамент */
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 22px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     font-weight: bold;
+    color: #a67c52;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
+    padding: 14px 16px;
+    border: 1px solid #3d3428;
+    border-radius: 2px;
+    background: linear-gradient(180deg, #252218 0%, #1e1a14 100%);
+    color: #c4b8a8;
+    font-size: 15px;
+    font-family: 'MedievalSharp', serif;
+    box-shadow: 
+        inset 0 2px 6px rgba(0, 0, 0, 0.4),
+        0 1px 0 rgba(255, 255, 255, 0.03);
+    transition: all 0.3s ease;
 }
 
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #a67c52;
+    box-shadow: 
+        inset 0 2px 6px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(166, 124, 82, 0.15);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #5a5040;
+    font-style: italic;
+}
+
+.form-group select option {
+    background-color: #1e1a14;
+    color: #c4b8a8;
+}
+
+/* Таблицы - старые свитки */
 table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     margin-top: 20px;
+    background: linear-gradient(180deg, #252218 0%, #1e1a14 100%);
+    border: 1px solid #3d3428;
+    box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.5),
+        inset 0 0 30px rgba(0, 0, 0, 0.3);
 }
 
 table th,
 table td {
-    border: 1px solid #ddd;
-    padding: 10px;
+    padding: 14px 18px;
     text-align: left;
+    border-bottom: 1px solid #2a2520;
 }
 
 table th {
-    background-color: #333;
-    color: #fff;
+    background: linear-gradient(180deg, #2a2520 0%, #1e1a14 100%);
+    color: #a67c52;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 2px;
+    border-bottom: 2px solid #3d3428;
+}
+
+table tr {
+    transition: all 0.3s ease;
+}
+
+table tbody tr:hover {
+    background: rgba(166, 124, 82, 0.05);
 }
 
 table tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background: rgba(0, 0, 0, 0.15);
 }
 
+table tbody tr:nth-child(even):hover {
+    background: rgba(166, 124, 82, 0.08);
+}
+
+/* Алерты */
 .alert {
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 4px;
+    padding: 18px 24px;
+    margin-bottom: 25px;
+    border-radius: 2px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border: 1px solid;
+}
+
+.alert::before {
+    font-size: 20px;
 }
 
 .alert-success {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
+    background: linear-gradient(180deg, #1a2518 0%, #152014 100%);
+    color: #8bab6b;
+    border-color: #2a3528;
+    box-shadow: inset 0 0 20px rgba(139, 171, 107, 0.05);
+}
+
+.alert-success::before {
+    content: '✓';
+    color: #8bab6b;
 }
 
 .alert-error {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
+    background: linear-gradient(180deg, #251818 0%, #201414 100%);
+    color: #ab6b6b;
+    border-color: #352828;
+    box-shadow: inset 0 0 20px rgba(171, 107, 107, 0.05);
 }
 
+.alert-error::before {
+    content: '✕';
+    color: #ab6b6b;
+}
+
+/* Карточки - старые доски */
 .card {
-    background: #fff;
-    padding: 20px;
+    background: linear-gradient(180deg, #252218 0%, #1e1a14 50%, #1a1610 100%);
+    padding: 30px;
+    margin-bottom: 25px;
+    border: 1px solid #3d3428;
+    box-shadow: 
+        0 8px 30px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.03),
+        inset 0 0 40px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    border: 1px solid rgba(166, 124, 82, 0.1);
+    pointer-events: none;
+}
+
+.card h2 {
+    color: #a67c52;
     margin-bottom: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    font-family: 'Uncial Antiqua', cursive;
+    font-size: 24px;
+    border-bottom: 1px solid #3d3428;
+    padding-bottom: 15px;
+    text-shadow: 0 0 20px rgba(166, 124, 82, 0.2);
 }
 
-.footer {
-    text-align: center;
-    padding: 20px;
-    background-color: #333;
-    color: #fff;
-    margin-top: 40px;
+.card h3 {
+    color: #8a6a4a;
+    margin: 25px 0 15px;
+    font-size: 18px;
+    font-family: 'Uncial Antiqua', cursive;
 }
 
+.card p {
+    margin-bottom: 12px;
+    color: #a09080;
+}
+
+.card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.card ul li {
+    padding: 8px 0;
+    padding-left: 25px;
+    position: relative;
+    color: #a09080;
+}
+
+.card ul li::before {
+    content: '†';
+    position: absolute;
+    left: 5px;
+    color: #a67c52;
+    font-size: 14px;
+}
+
+/* Сетка статистики */
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 20px;
 }
 
 .stat-item {
-    background: #fff;
-    padding: 15px;
+    background: linear-gradient(180deg, #252218 0%, #1a1610 100%);
+    padding: 25px 20px;
     text-align: center;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border: 1px solid #3d3428;
+    box-shadow: 
+        0 5px 15px rgba(0, 0, 0, 0.4),
+        inset 0 0 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+    border-color: #5a4a32;
+    box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.5),
+        inset 0 0 20px rgba(0, 0, 0, 0.3),
+        0 0 30px rgba(166, 124, 82, 0.1);
 }
 
 .stat-value {
-    font-size: 24px;
+    font-size: 36px;
     font-weight: bold;
-    color: #007bff;
+    color: #a67c52;
+    font-family: 'Uncial Antiqua', cursive;
+    text-shadow: 0 0 20px rgba(166, 124, 82, 0.3);
 }
 
 .stat-label {
-    color: #666;
-    font-size: 14px;
+    color: #7a7060;
+    font-size: 12px;
+    margin-top: 8px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Футер - каменная кладка с камином */
+.footer {
+    text-align: center;
+    padding: 80px 30px 40px;
+    margin-top: 50px;
+    position: relative;
+    background: 
+        linear-gradient(180deg, #1a1510 0%, #121010 100%);
+    border-top: 3px solid #3d3428;
+}
+
+.footer::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 80px;
+    background: 
+        radial-gradient(ellipse 60px 50px at 50% 100%, 
+            transparent 0%, 
+            transparent 60%, 
+            #2a2018 61%, 
+            #1a1510 100%);
+    border: 4px solid #3d3428;
+    border-bottom: none;
+    border-radius: 60px 60px 0 0;
+    box-shadow: 
+        inset 0 -30px 40px rgba(180, 80, 20, 0.3),
+        inset 0 -15px 25px rgba(200, 60, 10, 0.4);
+}
+
+.footer::after {
+    content: '🔥';
+    position: absolute;
+    top: 45px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 35px;
+    animation: fireFlicker 0.8s infinite alternate;
+    filter: drop-shadow(0 0 15px rgba(200, 80, 20, 0.8));
+}
+
+@keyframes fireFlicker {
+    0% { 
+        opacity: 0.9; 
+        transform: translateX(-50%) scale(1);
+    }
+    50% { 
+        opacity: 1; 
+        transform: translateX(-50%) scale(1.05) rotate(-2deg);
+    }
+    100% { 
+        opacity: 0.85; 
+        transform: translateX(-50%) scale(0.95) rotate(2deg);
+    }
+}
+
+.footer p {
+    margin: 0;
+    color: #8a7a60;
+    font-family: 'Uncial Antiqua', cursive;
+    font-size: 18px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    position: relative;
+    z-index: 1;
+}
+
+.footer p::before {
+    content: '⚰ Отдохни, путник... ';
+    display: block;
+    font-size: 22px;
+    color: #9a7a5a;
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px rgba(154, 122, 90, 0.3);
+}
+
+/* Заголовки страниц */
+h1 {
+    color: #a67c52;
+    font-size: 32px;
+    margin-bottom: 30px;
+    font-family: 'Uncial Antiqua', cursive;
+    text-shadow: 
+        0 0 30px rgba(166, 124, 82, 0.3),
+        2px 2px 4px rgba(0, 0, 0, 0.8);
+    border-bottom: 1px solid #3d3428;
+    padding-bottom: 15px;
+    position: relative;
+}
+
+h1::before {
+    content: '⚜ ';
+    opacity: 0.6;
+}
+
+h1::after {
+    content: ' ⚜';
+    opacity: 0.6;
+}
+
+/* Контейнер логина */
+.login-container {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 50px 40px;
+    background: linear-gradient(180deg, #252218 0%, #1e1a14 50%, #1a1610 100%);
+    border: 2px solid #3d3428;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.7),
+        inset 0 0 50px rgba(0, 0, 0, 0.4),
+        0 0 0 1px #1a1510,
+        0 0 0 4px #2a2318;
+    position: relative;
+}
+
+.login-container::before {
+    content: '⚔';
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 40px;
+    color: #a67c52;
+    text-shadow: 0 0 20px rgba(166, 124, 82, 0.5);
+}
+
+.login-container h1 {
+    text-align: center;
+    margin-bottom: 35px;
+    color: #a67c52;
+    font-family: 'Uncial Antiqua', cursive;
+    font-size: 28px;
+    border-bottom: 1px solid #3d3428;
+    padding-bottom: 20px;
+}
+
+.login-container h1::before,
+.login-container h1::after {
+    content: none;
+}
+
+/* Скроллбар */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1a1510;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #3d3428 0%, #2a2318 100%);
+    border: 2px solid #1a1510;
+    border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #4d4438 0%, #3a3328 100%);
+}
+
+/* Выделение текста */
+::selection {
+    background-color: #a67c52;
+    color: #1a1510;
+}
+
+/* Ссылки */
+a {
+    color: #8a6a4a;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: #a67c52;
+}
+
+/* Горизонтальная линия */
+hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        #3d3428 20%, 
+        #5a4a32 50%, 
+        #3d3428 80%, 
+        transparent 100%);
+    margin: 25px 0;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card, .stat-item, table {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .navbar::before,
+    .navbar::after {
+        display: none;
+    }
+
+    .nav-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .nav-user {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .container {
+        padding: 15px;
+        margin: 10px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h1::before,
+    h1::after {
+        content: none;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    .card::before {
+        display: none;
+    }
+
+    table {
+        font-size: 13px;
+    }
+
+    table th,
+    table td {
+        padding: 10px 12px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stat-value {
+        font-size: 28px;
+    }
+
+    .footer {
+        padding: 100px 20px 40px;
+    }
+
+    .footer p::before {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 12px;
+    }
+
+    .btn::before,
+    .btn::after {
+        display: none;
+    }
+
+    .login-container {
+        margin: 60px 15px;
+        padding: 30px 20px;
+    }
+
+    .login-container::before {
+        font-size: 30px;
+        top: -25px;
+    }
+
+    .footer::before {
+        width: 100px;
+        height: 60px;
+    }
+
+    .footer::after {
+        font-size: 28px;
+        top: 35px;
+    }
+}
+
+/* Печать */
+@media print {
+    .navbar,
+    .footer,
+    .btn {
+        display: none !important;
+    }
+
+    body {
+        background: white;
+        color: black;
+    }
+
+    .container {
+        box-shadow: none;
+        border: none;
+        max-width: 100%;
+    }
+
+    .card {
+        box-shadow: none;
+        border: 1px solid #ccc;
+        break-inside: avoid;
+    }
 }

@@ -21,4 +21,3 @@ function getDBConnection() {
         die("Ошибка подключения к базе данных: " . $e->getMessage());
     }
 }
-?>

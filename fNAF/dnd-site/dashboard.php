@@ -1,7 +1,7 @@
 <?php
 $pageTitle = 'Главная панель';
-require_once 'config/database.php';
-require_once 'includes/header.php';
+require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/includes/header.php';
 requireLogin();
 
 $pdo = getDBConnection();
@@ -39,7 +39,7 @@ $creaturesCount = $pdo->query("SELECT COUNT(*) FROM BESTIARY")->fetchColumn();
 
 <div class="card" style="margin-top: 30px;">
     <h2>Ваша роль: <?= ucfirst($_SESSION['role']) ?></h2>
-    
+
     <?php if (isAdmin()): ?>
         <p>Вы имеете полный доступ ко всем функциям системы.</p>
         <ul>
@@ -58,4 +58,4 @@ $creaturesCount = $pdo->query("SELECT COUNT(*) FROM BESTIARY")->fetchColumn();
     <?php endif; ?>
 </div>
 
-<?php require_once 'includes/footer.php'; ?>
+<?php require_once __DIR__ . '/includes/footer.php'; ?>

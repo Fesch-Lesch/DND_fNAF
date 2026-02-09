@@ -1,7 +1,7 @@
 <?php
 $pageTitle = 'Управление персонажами';
-require_once '../config/database.php';
-require_once '../includes/header.php';
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../includes/header.php';
 requireRole('admin');
 
 $pdo = getDBConnection();
@@ -14,8 +14,8 @@ $viewCharacter = null;
 
 if (isset($_GET['view'])) {
     $stmt = $pdo->prepare("
-        SELECT c.*, t.team_color 
-        FROM CHARACTERS c 
+        SELECT c.*, t.team_color
+        FROM CHARACTERS c
         LEFT JOIN TEAMS t ON t.character_id = c.character_id
         WHERE c.character_id = ?
     ");
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'initiative' => (int)$_POST['initiative'],
         'speed' => (int)$_POST['speed']
     ];
-    
+
     if (empty($data['name']) || empty($data['race']) || empty($data['class'])) {
         $error = 'Имя, раса и класс обязательны';
     } else {
@@ -80,17 +80,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $pdo->prepare($sql);
             $stmt->execute(array_values($data));
-            
+
             $characterId = $pdo->lastInsertId();
-            
+
             if (!empty($_POST['assign_team_id'])) {
                 $stmt = $pdo->prepare("UPDATE TEAMS SET character_id = ? WHERE team_id = ?");
                 $stmt->execute([$characterId, (int)$_POST['assign_team_id']]);
             }
-            
+
             $message = 'Персонаж успешно создан';
         }
-        
+
         header('Location: characters.php?success=1');
         exit;
     }
@@ -102,15 +102,15 @@ if (isset($_GET['success'])) {
 
 $characters = $pdo->query("
     SELECT c.*, t.team_color, t.team_id
-    FROM CHARACTERS c 
+    FROM CHARACTERS c
     LEFT JOIN TEAMS t ON t.character_id = c.character_id
     ORDER BY c.name
 ")->fetchAll();
 
 $availableTeams = $pdo->query("
-    SELECT team_id, team_color 
-    FROM TEAMS 
-    WHERE character_id IS NULL 
+    SELECT team_id, team_color
+    FROM TEAMS
+    WHERE character_id IS NULL
     ORDER BY team_color
 ")->fetchAll();
 
@@ -416,4 +416,4 @@ $allTeams = $pdo->query("SELECT team_id, team_color FROM TEAMS ORDER BY team_col
 
 <?php endif; ?>
 
-<?php require_once '../includes/footer.php'; ?>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>
