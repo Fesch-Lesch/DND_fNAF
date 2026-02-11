@@ -4,7 +4,7 @@ require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../includes/header.php';
 requireLogin();
 
-$pdo = getDBConnection();
+$pdo = getSecondDBConnection();
 
 $search = $_GET['search'] ?? '';
 $type = $_GET['type'] ?? '';

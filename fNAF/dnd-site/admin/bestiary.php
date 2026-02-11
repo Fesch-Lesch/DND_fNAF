@@ -4,8 +4,9 @@ require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../includes/header.php';
 requireRole('admin');
 
-$pdo = getDBConnection();
-setCurrentUserForTriggers($pdo);
+$pdo = getSecondDBConnection();
+$pdo_main = getDBConnection();
+setCurrentUserForTriggers($pdo_main);
 
 $message = '';
 $error = '';

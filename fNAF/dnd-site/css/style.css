@@ -17,9 +17,11 @@ body {
     font-size: 19px;
     line-height: 1.7;
     
-    /* ФОН - ПЕРГАМЕНТ */
-    background-image: url('ПУТЬ_К_ВАШЕМУ_ИЗОБРАЖЕНИЮ.jpg'); 
-    background-color: #e8dcc4;
+    /* === ИЗМЕНЕНИЕ ЗДЕСЬ === */
+    /* Ссылка на PHP-скрипт, который достает картинку из 3-й базы данных */
+    background-image: url('../public/get_bg.php'); 
+    
+    background-color: #e8dcc4; /* Резервный цвет, пока грузится картинка */
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
