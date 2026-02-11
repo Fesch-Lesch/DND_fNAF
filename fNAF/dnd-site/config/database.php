@@ -1,21 +1,21 @@
 <?php
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'DND-fNAF');
-define('DB_USER', 'admin');
-define('DB_PASS', 'admin');
+// Конфигурация подключения к базе данных
+define('DB_HOST', '134.90.167.42');
+define('DB_PORT', value: '10306');
+define('DB_NAME', 'project_Feschenko');
+define('DB_USER', 'Feschenko');
+define('DB_PASS', 'E1dO7]_Ev)sbamOd');
+define('DB_CHARSET', 'utf8mb4');
 
 function getDBConnection() {
     try {
-        $pdo = new PDO(
-            "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4",
-            DB_USER,
-            DB_PASS,
-            [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES => false
-            ]
-        );
+        $dsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;
+        $options = [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES   => false,
+        ];
+        $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
         return $pdo;
     } catch (PDOException $e) {
         die("Ошибка подключения к базе данных: " . $e->getMessage());

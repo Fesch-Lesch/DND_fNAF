@@ -1,7 +1,7 @@
 <?php
 $pageTitle = 'Бестиарий';
-require_once '../config/database.php';
-require_once '../includes/header.php';
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../includes/header.php';
 requireLogin();
 
 $pdo = getDBConnection();
@@ -36,6 +36,15 @@ if (isset($_GET['creature_id'])) {
     $stmt->execute([(int)$_GET['creature_id']]);
     $selectedCreature = $stmt->fetch();
 }
+
+$sizeLabels = [
+    'tiny' => 'Крошечный',
+    'small' => 'Маленький',
+    'medium' => 'Средний',
+    'large' => 'Большой',
+    'huge' => 'Огромный',
+    'gargantuan' => 'Исполинский'
+];
 ?>
 
 <h1>📖 Бестиарий</h1>
@@ -69,7 +78,7 @@ if (isset($_GET['creature_id'])) {
 <?php if ($selectedCreature): ?>
 <div class="card">
     <h2><?= htmlspecialchars($selectedCreature['name']) ?></h2>
-    <p><em><?= htmlspecialchars($selectedCreature['size']) ?> <?= htmlspecialchars($selectedCreature['type']) ?>, <?= htmlspecialchars($selectedCreature['alignment'] ?? 'без мировоззрения') ?></em></p>
+    <p><em><?= $sizeLabels[$selectedCreature['size']] ?? $selectedCreature['size'] ?> <?= htmlspecialchars($selectedCreature['type']) ?>, <?= htmlspecialchars($selectedCreature['alignment'] ?? 'без мировоззрения') ?></em></p>
     
     <hr style="margin: 15px 0;">
     
@@ -108,57 +117,57 @@ if (isset($_GET['creature_id'])) {
     
     <hr style="margin: 15px 0;">
     
-    <?php if ($selectedCreature['damage_vulnerabilities']): ?>
+    <?php if (!empty($selectedCreature['damage_vulnerabilities'])): ?>
         <p><strong>Уязвимости:</strong> <?= htmlspecialchars($selectedCreature['damage_vulnerabilities']) ?></p>
     <?php endif; ?>
     
-    <?php if ($selectedCreature['damage_resistances']): ?>
+    <?php if (!empty($selectedCreature['damage_resistances'])): ?>
         <p><strong>Сопротивления:</strong> <?= htmlspecialchars($selectedCreature['damage_resistances']) ?></p>
     <?php endif; ?>
     
-    <?php if ($selectedCreature['damage_immunities']): ?>
+    <?php if (!empty($selectedCreature['damage_immunities'])): ?>
         <p><strong>Иммунитеты к урону:</strong> <?= htmlspecialchars($selectedCreature['damage_immunities']) ?></p>
     <?php endif; ?>
     
-    <?php if ($selectedCreature['condition_immunities']): ?>
+    <?php if (!empty($selectedCreature['condition_immunities'])): ?>
         <p><strong>Иммунитеты к состояниям:</strong> <?= htmlspecialchars($selectedCreature['condition_immunities']) ?></p>
     <?php endif; ?>
     
-    <?php if ($selectedCreature['senses']): ?>
+    <?php if (!empty($selectedCreature['senses'])): ?>
         <p><strong>Чувства:</strong> <?= htmlspecialchars($selectedCreature['senses']) ?></p>
     <?php endif; ?>
     
-    <?php if ($selectedCreature['languages']): ?>
+    <?php if (!empty($selectedCreature['languages'])): ?>
         <p><strong>Языки:</strong> <?= htmlspecialchars($selectedCreature['languages']) ?></p>
     <?php endif; ?>
     
     <p><strong>Опасность:</strong> <?= $selectedCreature['challenge_rating'] ?> (<?= $selectedCreature['experience_points'] ?> XP)</p>
     
-    <?php if ($selectedCreature['special_abilities']): ?>
+    <?php if (!empty($selectedCreature['special_abilities'])): ?>
         <hr style="margin: 15px 0;">
         <h3>Особые способности</h3>
         <p><?= nl2br(htmlspecialchars($selectedCreature['special_abilities'])) ?></p>
     <?php endif; ?>
     
-    <?php if ($selectedCreature['actions']): ?>
+    <?php if (!empty($selectedCreature['actions'])): ?>
         <hr style="margin: 15px 0;">
         <h3>Действия</h3>
         <p><?= nl2br(htmlspecialchars($selectedCreature['actions'])) ?></p>
     <?php endif; ?>
     
-    <?php if ($selectedCreature['legendary_actions']): ?>
+    <?php if (!empty($selectedCreature['legendary_actions'])): ?>
         <hr style="margin: 15px 0;">
         <h3>Легендарные действия</h3>
         <p><?= nl2br(htmlspecialchars($selectedCreature['legendary_actions'])) ?></p>
     <?php endif; ?>
     
-    <?php if ($selectedCreature['description']): ?>
+    <?php if (!empty($selectedCreature['description'])): ?>
         <hr style="margin: 15px 0;">
         <h3>Описание</h3>
         <p><?= nl2br(htmlspecialchars($selectedCreature['description'])) ?></p>
     <?php endif; ?>
     
-    <?php if ($selectedCreature['habitat']): ?>
+    <?php if (!empty($selectedCreature['habitat'])): ?>
         <p><strong>Среда обитания:</strong> <?= htmlspecialchars($selectedCreature['habitat']) ?></p>
     <?php endif; ?>
     
@@ -195,7 +204,7 @@ if (isset($_GET['creature_id'])) {
             <tr>
                 <td><?= htmlspecialchars($creature['name']) ?></td>
                 <td><?= htmlspecialchars($creature['type']) ?></td>
-                <td><?= htmlspecialchars($creature['size']) ?></td>
+                <td><?= $sizeLabels[$creature['size']] ?? $creature['size'] ?></td>
                 <td><?= $creature['challenge_rating'] ?></td>
                 <td><?= $creature['hp'] ?></td>
                 <td><?= $creature['armor_class'] ?></td>
@@ -210,4 +219,4 @@ if (isset($_GET['creature_id'])) {
 
 <?php endif; ?>
 
-<?php require_once '../includes/footer.php'; ?>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>

@@ -1,7 +1,7 @@
 <?php
 $pageTitle = 'Рейтинг команд';
-require_once '../config/database.php';
-require_once '../includes/header.php';
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../includes/header.php';
 requireLogin();
 
 $pdo = getDBConnection();
@@ -54,4 +54,4 @@ $teams = $stmt->fetchAll();
     </tbody>
 </table>
 
-<?php require_once '../includes/footer.php'; ?>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>
