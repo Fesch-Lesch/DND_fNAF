@@ -69,7 +69,7 @@ body::after {
 
 .nav-brand a {
     font-family: 'Ruslan Display', cursive;
-    font-size: 34px;
+    font-size: 24px;
     color: #c9b299;
     text-decoration: none;
     letter-spacing: 2px;
@@ -90,11 +90,11 @@ body::after {
 
 .nav-menu li a {
     font-family: 'Philosopher', sans-serif;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
     color: #c4b5a0;
     text-decoration: none;
-    padding: 8px 15px;
+    padding: 8px 12px;
     border-radius: 4px;
     transition: all 0.3s ease;
 }
