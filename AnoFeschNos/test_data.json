@@ -1,0 +1,37 @@
+{
+  "urls": {
+    "login": "http://localhost:3000/dnd-site/login.php",
+    "logout": "http://localhost:3000/dnd-site/logout.php"
+  },
+  "common_password": "password",
+  "users": [
+    {
+      "login": "admin",
+      "expected_role": "admin"
+    },
+    {
+      "login": "teacher1",
+      "expected_role": "teacher"
+    },
+    {
+      "login": "teacher2",
+      "expected_role": "teacher"
+    },
+    {
+      "login": "captain_red",
+      "expected_role": "captain"
+    },
+    {
+      "login": "captain_blue",
+      "expected_role": "captain"
+    },
+    {
+      "login": "captain_green",
+      "expected_role": "captain"
+    },
+    {
+      "login": "captain_yellow",
+      "expected_role": "captain"
+    }
+  ]
+}
