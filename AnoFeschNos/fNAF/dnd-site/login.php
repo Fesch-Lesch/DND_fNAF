@@ -50,7 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <div class="login-container">
-        <h1>🎲 DnD System</h1>
+        <!-- Убран смайлик, оставлен только текст -->
+        <h1>DnD System</h1>
 
         <?php if ($error): ?>
             <div class="alert alert-error"><?= htmlspecialchars($error) ?></div>
@@ -68,7 +69,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="password" id="password" name="password" required>
             </div>
 
-            <button type="submit" class="btn btn-primary" style="width: 100%;">Войти</button>
+            <!-- Кнопка использует стиль btn-primary из style.css (коричневая/средневековая) -->
+            <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.2em; margin-top: 10px;">Войти</button>
         </form>
     </div>
 </body>
